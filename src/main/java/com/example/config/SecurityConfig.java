@@ -62,29 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // 拦截在这配
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // 去掉 CSRF
-        /* http.csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 使用 JWT，关闭token
-                .and()
-        
-                .httpBasic().authenticationEntryPoint(authenticationEntryPoint)
-        
-                .and()
-                .authorizeRequests()
-        
-                .anyRequest()
-                .access("@rbacauthorityservice.hasPermission(request,authentication)") // RBAC 动态 url 认证
-        
-                .and()
-                .formLogin()  //开启登录
-                .successHandler(authenticationSuccessHandler) // 登录成功
-                .failureHandler(authenticationFailureHandler) // 登录失败
-                .permitAll()
-        
-                .and()
-                .logout()
-                .logoutSuccessHandler(logoutSuccessHandler)
-                .permitAll();*/
+        // 去掉 CSRF 关闭session
 
         http.cors().and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().authorizeRequests()

@@ -1,4 +1,4 @@
-package com.example.config.test;
+package com.example.test;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -8,3 +8,4 @@ public static void main(String[] args) {
     System.out.println(bCryptPasswordEncoder.encode("1234567"));
 }
 }
+
