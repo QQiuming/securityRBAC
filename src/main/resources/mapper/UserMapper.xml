@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
+<mapper namespace="com.example.mapper.UserMapper">
+
+	<resultMap id="BaseResultMap" type="com.example.model.User">
+		<id column="t_userid" property="userid" jdbcType="INTEGER" />
+		<result column="t_loginname" property="loginname"
+			jdbcType="VARCHAR" />
+		<result column="t_password" property="password"
+			jdbcType="VARCHAR" />
+		<result column="t_user_description" property="userDescription"
+			jdbcType="VARCHAR" />
+		<result column="t_roleid" property="roleid" jdbcType="INTEGER" />
+		<association property="role"
+			javaType="com.example.model.Role">
+			<id column="t_roleid" property="roleid" jdbcType="INTEGER" />
+			<result column="t_rolename" property="rolename"
+				jdbcType="VARCHAR" />
+			<result column="t_role_description" property="roleDescription"
+				jdbcType="VARCHAR" />
+			<collection property="permissions"
+				ofType="com.example.model.RolePermission"
+				select="com.example.mapper.RolePermissionMapper.selectRolePermissionByRoleid"
+				column="t_roleid"></collection>
+		</association>
+	</resultMap>
+
+	<select id="selectUserByLoginName"
+		parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from t_user u
+		inner join t_role r on u.t_roleid = r.t_roleid where
+		u.t_loginname =
+		#{loginname}
+	</select>
+</mapper>

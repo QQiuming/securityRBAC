@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
+<mapper namespace="com.example.mapper.PermissionMapper">
+
+	<resultMap id="BaseResultMap"
+		type="com.example.model.Permission">
+
+		<id column="t_permissionid" property="permissionid"
+			jdbcType="INTEGER" />
+		<result column="t_permissionname" property="permissionname"
+			jdbcType="VARCHAR" />
+		<result column="t_permission_description"
+			property="permissionDescription" jdbcType="VARCHAR" />
+		<result column="t_url" property="url" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="selectPermissionByPermissionid"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select * from t_permission where
+		t_permissionid = #{permissionid}
+	</select>
+</mapper>

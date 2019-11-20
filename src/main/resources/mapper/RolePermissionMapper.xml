@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
+<mapper namespace="com.example.mapper.RolePermissionMapper">
+
+	<resultMap id="BaseResultMap"
+		type="com.example.model.RolePermission">
+		<id column="t_roleid" property="roleid" jdbcType="INTEGER" />
+		<id column="t_permissionid" property="permissionid"
+			jdbcType="INTEGER" />
+		<association property="permission"
+			javaType="com.example.model.Permission">
+			<id column="t_permissionid" property="permissionid"
+				jdbcType="INTEGER" />
+			<result column="t_permissionname" property="permissionname"
+				jdbcType="VARCHAR" />
+			<result column="t_permission_description"
+				property="permissionDescription" jdbcType="VARCHAR" />
+			<result column="t_url" property="url" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+
+	<select id="selectRolePermissionByRoleid"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		rp.t_roleid,rp.t_permissionid,p.t_permissionid,p.t_permissionname,p.t_permission_description,p.t_url
+		from t_role_permission rp inner join t_permission p on
+		rp.t_permissionid
+		= p.t_permissionid where rp.t_roleid = #{roleid}
+		<!-- select * from t_role_permission where t_roleid = #{roleid} -->
+	</select>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
+<mapper namespace="com.example.mapper.RoleMapper">
+
+	<!-- <resultMap id="BaseResultMap" type="com.example.model.User">
+		<id column="t_userid" property="userid" jdbcType="INTEGER" />
+		<result column="t_loginname" property="loginname"
+			jdbcType="VARCHAR" />
+		<result column="t_password" property="password"
+			jdbcType="VARCHAR" />
+		<result column="t_user_description" property="userDescription"
+			jdbcType="VARCHAR" />
+		<result column="t_roleid" property="roleid" jdbcType="INTEGER" />
+	</resultMap>
+
+	<select id="selectUserByLoginName" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from t_user where
+		t_loginname = #{loginname}
+	</select> -->
+</mapper>
