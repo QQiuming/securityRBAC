@@ -1,5 +1,8 @@
 package com.example.config;
 
+import com.example.filter.JwtAuthorizationTokenFilter;
+import com.example.filter.MyAuthenticationProvider;
+import com.example.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,16 +16,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.example.filter.JwtAuthorizationTokenFilter;
-import com.example.filter.MyAuthenticationProvider;
-import com.example.handler.GoAccessDeniedHandler;
-import com.example.handler.GoAuthenticationEntryPoint;
-import com.example.handler.GoAuthenticationFailureHandler;
-import com.example.handler.GoAuthenticationSuccessHandler;
-import com.example.handler.GoLogoutSuccessHandler;
-import com.example.service.JwtUserDetailsService;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity // 这个注解必须加，开启Security
@@ -30,19 +29,19 @@ import com.example.service.JwtUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    GoAuthenticationEntryPoint authenticationEntryPoint; // 未登陆时返回 JSON 格式的数据给前端（否则为 html）
+    AuthenticationEntryPoint authenticationEntryPoint; // 未登陆时返回 JSON 格式的数据给前端（否则为 html）
 
     @Autowired
-    GoAuthenticationSuccessHandler authenticationSuccessHandler; // 登录成功返回的 JSON 格式数据给前端（否则为 html）
+    AuthenticationSuccessHandler authenticationSuccessHandler; // 登录成功返回的 JSON 格式数据给前端（否则为 html）
 
     @Autowired
-    GoAuthenticationFailureHandler authenticationFailureHandler; // 登录失败返回的 JSON 格式数据给前端（否则为 html）
+    AuthenticationFailureHandler authenticationFailureHandler; // 登录失败返回的 JSON 格式数据给前端（否则为 html）
 
     @Autowired
-    GoLogoutSuccessHandler logoutSuccessHandler; // 注销成功返回的 JSON 格式数据给前端（否则为 登录时的 html）
+    LogoutSuccessHandler logoutSuccessHandler; // 注销成功返回的 JSON 格式数据给前端（否则为 登录时的 html）
 
     @Autowired
-    GoAccessDeniedHandler accessDeniedHandler; // 无权访问返回的 JSON 格式数据给前端（否则为 403 html 页面）
+    AccessDeniedHandler accessDeniedHandler; // 无权访问返回的 JSON 格式数据给前端（否则为 403 html 页面）
 
     @Autowired
     JwtUserDetailsService jwtUserDetailsService;
@@ -72,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-ui.html", "/webjars/**", 
                 "/swagger-resources/configuration/ui", "/swagge‌​r-ui.html").permitAll().
             antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-            // 校验用户有没有权限访问链接
+            // 校验用户有没有权限访问链接  WebSecurityExpressionRoot
             .anyRequest().access("@rbacauthorityservice.hasPermission(request,authentication)").and()
             // 用户登录
             .formLogin().loginProcessingUrl("/user/login").permitAll()
@@ -112,5 +111,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+
 
 }

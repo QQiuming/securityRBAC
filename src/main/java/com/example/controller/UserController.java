@@ -18,8 +18,10 @@ public class UserController {
 
     @ApiOperation(value = "userLogin", notes = "userLogin", httpMethod = "POST")
     @PostMapping("/login")
-    public void login(@RequestParam("username") String loginname,@RequestParam("password") String password) {
+    public void login(@RequestParam("username") String loginname,@RequestParam("password") String password,@RequestParam("captcha") String captcha) {
         System.out.println(123);
+
+
     }
     
 }

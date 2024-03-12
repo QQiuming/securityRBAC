@@ -6,7 +6,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.example.service.JwtUserDetailsService;
@@ -15,8 +17,10 @@ import com.example.service.JwtUserDetailsService;
 public class MyAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    private JwtUserDetailsService jwtUserDetailsService;
-    
+    private UserDetailsService jwtUserDetailsService;
+
+    @Autowired
+    PasswordEncoder bCryptPasswordEncoder;
     /**
      * 进行身份认证
      *
@@ -33,9 +37,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         String password = authentication.getCredentials().toString();
         // 获取封装用户信息的对象
         UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
-        // 进行密码的比对
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-     
+
         boolean flag = bCryptPasswordEncoder.matches(password, userDetails.getPassword());
         // 校验通过
         if (flag){
